@@ -1,2 +1,7 @@
 openai
 streamlit
+time
+pandas
+json
+plotly.express
+boto3
