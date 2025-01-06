@@ -6,6 +6,8 @@ import json
 import plotly.express as px
 import boto3
 
+st.write("Welcome to the App")
+s3 = boto.resource('s3')
 boto3.client("s3")
 s3.upload_file(r'C:/Dev/boj_streamlit_demo/Fake_Profit_and_Loss_Balance_Sheet.csv', 'streamlit_demo', 'fake_balsheet.csv')
 
