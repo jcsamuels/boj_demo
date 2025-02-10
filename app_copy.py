@@ -32,13 +32,9 @@ def hash_password(password):
 # Load users database
 def load_users():
     if not os.path.exists(USER_DB):
-        df = pd.DataFrame([
-            {"username": "admin", "password": hash_password("admin123"), "role": "Admin"},
-            {"username": "sme1", "password": hash_password("sme123"), "role": "SME"}
-        ])
+        df = pd.DataFrame(columns=["username", "password", "role"])
         df.to_csv(USER_DB, index=False)
     return pd.read_csv(USER_DB)
-
 
 # Load file status database
 def load_file_status():
@@ -78,7 +74,7 @@ def logout():
     st.session_state.authenticated = False
     st.session_state.role = None
     st.session_state.username = None
-    
+    st.experimental_rerun()
 
 # SME Dashboard
 def sme_dashboard(username):
@@ -127,7 +123,7 @@ def sme_dashboard(username):
         st.session_state.authenticated = False
         st.session_state.role = None
         st.session_state.username = None
-        
+        st.experimental_rerun()
 
 
 # Admin Dashboard
@@ -163,14 +159,14 @@ def admin_dashboard():
                 df.loc[df['filename'] == selected_file, 'status'] = "Approved"
                 df.loc[df['filename'] == selected_file, 'note'] = note
                 save_file_status(df)
-                
+                st.experimental_rerun()
             
             if col2.button("Reject", key="reject", help="Reject the selected file", use_container_width=True):
                 shutil.move(os.path.join(UPLOAD_DIR, selected_file), os.path.join(REJECTED_DIR, selected_file))
                 df.loc[df['filename'] == selected_file, 'status'] = "Rejected"
                 df.loc[df['filename'] == selected_file, 'note'] = note
                 save_file_status(df)
-                 
+                st.experimental_rerun()  
        
                 
     
@@ -183,7 +179,7 @@ def admin_dashboard():
         st.session_state.authenticated = False
         st.session_state.role = None
         st.session_state.username = None
-        
+        st.experimental_rerun()
 
 
 
@@ -202,7 +198,8 @@ def main():
             if role:
                 st.session_state.authenticated = True
                 st.session_state.role = role
-                st.session_state.username = username                
+                st.session_state.username = username
+                st.experimental_rerun()
             else:
                 st.error("Invalid credentials")
         
